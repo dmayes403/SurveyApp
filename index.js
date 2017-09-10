@@ -1,10 +1,14 @@
 const express = require('express');
 // this import style is using common js modules ^^ instead of import express from 'express' like we see in js files
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send({ hi: 'hey johnny!' });
-})
+passport.use(new GoogleStrategy())
+
+// app.get('/', (req, res) => {
+//     res.send({ hi: 'hey johnny!' });
+// })
 // ^^ this creates a new route handler that is watching for http requests. 
 // we also have available get, put, post, patch, delete.
 // Res is what's being sent back to the front end
