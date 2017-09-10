@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send({ hi: 'there' });
+    res.send({ hi: 'hey johnny!' });
 })
 // ^^ this creates a new route handler that is watching for http requests. 
 // we also have available get, put, post, patch, delete.
