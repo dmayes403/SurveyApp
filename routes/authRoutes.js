@@ -20,4 +20,16 @@ module.exports = app => {
   // ^^ this creates a new route handler that is watching for http requests.
   // we also have available get, put, post, patch, delete.
   // Res is what's being sent back to the front end
+
+  app.get('/api/logout', (req, res) => {
+      req.logout();
+      // ^^ this is a function that is automatically attached to the request object by passport.
+      // It wipes out the cookie
+      res.send(req.user);
+      // ^^ this proves to the user that they are no longer logged in
+  })
+
+  app.get("/api/current_user", (req, res) => {
+    res.send(req.user);
+  })
 };
