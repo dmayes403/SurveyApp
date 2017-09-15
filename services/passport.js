@@ -8,6 +8,24 @@ const User = mongoose.model('users');
 // One argument means we're trying to get something out of mongoose, two arguments means
 // we're putting something into it (like in the user.js file).
 
+passport.serializeUser((user, done) => {
+    // ^^ user is the user model associated with record from database.
+    done(null, user.id);
+    // user.id is the oid on the mongo record, not the googleId
+    // we do this instead of using googleId, because might have multiple authentications
+    // such as facebook or linked in, etc
+
+    // -- ^^ this in turn gets stuffed into a cookie automatically
+});
+
+passport.deserializeUser((id, done) => {
+    User.findById(id)
+        .then(user => {
+            // ^^ user is the user record/model from the database
+            done(null, user)
+        })
+});
+
 passport.use(
     new GoogleStrategy({
         clientID: keys.googleClientID,
@@ -17,12 +35,18 @@ passport.use(
         // ^^ this callback is called instantly when the user is sent back to our server
         User.findOne({ googleId: profile.id })
             .then((existingUser) => {
-                // ^^ database functions are always asynchronus, so we must use promises
+                // ^^ database functions are always asyncronus, so we must use promises
                 if (existingUser) {
                     // we already have a record with the given profile ID
+                    done(null, existingUser); // ****
+                    // ^^ first argument of done is the error to send back, the second argument
+                    // is the data we want to pass back. Done is always used to close the async request.
                 } else {
                     // we don't have a user record with this userId, make a new record
-                    new User({ googleId: profile.id }).save();
+                    new User({ googleId: profile.id })
+                        .save()
+                        .then(user => done(null, user))
+                        // ^^ this is the user that's passed to passport.serializeUser()
                 }
             })
         // ^^ this takes that model *instance* and saves it to the database for us
