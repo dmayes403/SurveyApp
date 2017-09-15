@@ -15,7 +15,16 @@ passport.use(
         callbackURL: '/auth/google/callback'
     }, (accessToken, refreshToken, profile, done) => {
         // ^^ this callback is called instantly when the user is sent back to our server
-        new User({ googleId: profile.id }).save();
+        User.findOne({ googleId: profile.id })
+            .then((existingUser) => {
+                // ^^ database functions are always asynchronus, so we must use promises
+                if (existingUser) {
+                    // we already have a record with the given profile ID
+                } else {
+                    // we don't have a user record with this userId, make a new record
+                    new User({ googleId: profile.id }).save();
+                }
+            })
         // ^^ this takes that model *instance* and saves it to the database for us
     })
 );
