@@ -1,8 +1,12 @@
 const express = require('express');
 // this import style is using common js modules ^^ instead of import express from 'express' like we see in js files
+const mongoose = require('mongoose');
+const keys = require('./config/keys')
 require('./services/passport');
 // ^^ not assigning to a variable, because passport.js isn't exporting anything. But this is required
 // in at least one location for passport.js to actually run. Section 4, Lecture 28, 6:30
+
+mongoose.connect(keys.mongoURI);
 
 const app = express();
 
