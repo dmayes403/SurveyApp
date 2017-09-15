@@ -2,6 +2,8 @@ const express = require('express');
 // this import style is using common js modules ^^ instead of import express from 'express' like we see in js files
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
+// express-session is also an option. Cookie session stores the data in the cookie, express-session stores the 
+// data outside of the cookie in some remote server (could be our own server)
 const passport = require('passport');
 const keys = require('./config/keys')
 require('./models/user');
@@ -30,6 +32,8 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+// ^^ middleware (app.use...) is automatically used for every request that comes into the application. 
+// Used before route is handled.
 
 require('./routes/authRoutes')(app);
 // ^^ this passes in the app object from line 7 to be used in the authRoute functions.
