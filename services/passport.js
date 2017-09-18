@@ -30,7 +30,9 @@ passport.use(
     new GoogleStrategy({
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: '/auth/google/callback'
+        callbackURL: '/auth/google/callback',
+        proxy: true
+        // ^^ this is used to resolve "mis match url from google"
     }, (accessToken, refreshToken, profile, done) => {
         // ^^ this callback is called instantly when the user is sent back to our server
         User.findOne({ googleId: profile.id })
