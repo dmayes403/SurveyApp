@@ -37,7 +37,7 @@ passport.use(
         // ^^ this callback is called instantly when the user is sent back to our server
         User.findOne({ googleId: profile.id })
             .then((existingUser) => {
-                // ^^ database functions are always asyncronus, so we must use promises
+                // ^^ database functions are always asyncronous, so we must use promises
                 if (existingUser) {
                     // we already have a record with the given profile ID
                     done(null, existingUser); // ****
