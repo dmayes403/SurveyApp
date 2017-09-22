@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+import App from './components/App';
+
+ReactDOM.render(
+    <App />, document.querySelector('#root')
+    // ^^ this takes the App component, and renders it to the div with an id of "root" inside
+    // the public/index.html file
+);
