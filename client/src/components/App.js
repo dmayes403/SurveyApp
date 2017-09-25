@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import Header from './Header';
 
@@ -7,20 +9,27 @@ const Dashboard = () => <h2>Dashboard</h2>
 const SurveyView = () => <h2>SurveyView</h2>
 const Landing = () => <h2>Landing</h2>
 
-const App = () => {
-    return (
-        <div className="container">
-            <BrowserRouter>
-                <div>
-                    <Header />
-                    <Route exact path="/" component={Landing} />
-                    {/* ^^ exact is required to not pull in multiple componenets with route beginning with '/' */}
-                    <Route exact path="/surveys" component={Dashboard} />
-                    <Route path="/surveys/new" component={SurveyView} />
-                </div>
-            </BrowserRouter>
-        </div>
-    );
+class App extends Component {
+    componentDidMount() {
+        this.props.fetchUser();
+        //^^ props comes from actions being passed to the connect function below
+    }
+
+    render() {
+        return (
+            <div className="container">
+                <BrowserRouter>
+                    <div>
+                        <Header />
+                        <Route exact path="/" component={Landing} />
+                        {/* ^^ exact is required to not pull in multiple componenets with route beginning with '/' */}
+                        <Route exact path="/surveys" component={Dashboard} />
+                        <Route path="/surveys/new" component={SurveyView} />
+                    </div>
+                </BrowserRouter>
+            </div>
+        );
+    }
 };
 
-export default App;
+export default connect(null, actions)(App);
