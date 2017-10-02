@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 // express-session is also an option. Cookie session stores the data in the cookie, express-session stores the 
 // data outside of the cookie in some remote server (could be our own server)
 const passport = require('passport');
+const bodyParser = require('body-parser');
 const keys = require('./config/keys')
 require('./models/user');
 // ^^ sense we're not assigning it to a variable, it will be called when the app first boots up
@@ -18,6 +19,7 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(
     cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000,
