@@ -35,6 +35,7 @@ passport.use(
         // ^^ this is used to resolve "mis match url from google"
     }, 
     async (accessToken, refreshToken, profile, done) => {
+        console.log(profile.id)
         // ^^ this callback is called instantly when the user is sent back to our server
         const existingUser = await User.findOne({ googleId: profile.id })
         // ^^ database functions are always asyncronous, so we must use promises
@@ -43,12 +44,12 @@ passport.use(
             done(null, existingUser); // ****
             // ^^ first argument of done is the error to send back, the second argument
             // is the data we want to pass back. Done is always used to close the async request.
+        } else {
+            // if we don't have a user record with this userId, make a new record
+            const user = await new User({ googleId: profile.id }).save()
+            done(null, user);
+            // ^^ this is the user that's passed to passport.serializeUser()
+            // ^^ this takes that model *instance* and saves it to the database for us
         }
-
-        // if we don't have a user record with this userId, make a new record
-        const user = await new User({ googleId: profile.id }).save()
-        done(null, user);
-        // ^^ this is the user that's passed to passport.serializeUser()
-        // ^^ this takes that model *instance* and saves it to the database for us
     })
 );
