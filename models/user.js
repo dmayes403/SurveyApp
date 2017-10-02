@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 // ^^ destructoring
 
 const userSchema = new Schema({
-    googleId: String
+    googleId: String,
+    credits: { trype: Number, default: 0 }
 });
 
 mongoose.model('users', userSchema);
