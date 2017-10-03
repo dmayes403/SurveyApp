@@ -43,6 +43,18 @@ require('./routes/authRoutes')(app);
 // function is immediately called with the app object.
 require('./routes/billingRoutes')(app);
 
+if (process.env.NODE_ENV = 'productions') { // ****
+    // Express will serve up production assets like our main.js file, or main.css file!
+    app.use(express.static('client/build'));
+
+    // Express will serve up the index.html file if it doesn't recognize the route
+    const path = require('path');
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    })
+}
+// ^^ only used for production
+
 const PORT = process.env.PORT || 5000;
 // ^^ environment variables from heroku or dev port if heroku port is not defined
 app.listen(PORT);
