@@ -7,8 +7,8 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys')
-require('./models/user');
-require('./models/survey');
+require('./models/User');
+require('./models/Survey');
 // ^^ sense we're not assigning it to a variable, it will be called when the app first boots up
 require('./services/passport');
 // ^^ not assigning to a variable, because passport.js isn't exporting anything. But this is required
@@ -43,6 +43,7 @@ require('./routes/authRoutes')(app);
 // Because when we require the authRoutes file, it returns a function, and then that
 // function is immediately called with the app object.
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV = 'productions') { // ****
     // Express will serve up production assets like our main.js file, or main.css file!
