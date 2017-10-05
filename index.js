@@ -8,6 +8,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys')
 require('./models/user');
+require('./models/survey');
 // ^^ sense we're not assigning it to a variable, it will be called when the app first boots up
 require('./services/passport');
 // ^^ not assigning to a variable, because passport.js isn't exporting anything. But this is required
