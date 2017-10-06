@@ -1,7 +1,23 @@
+const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
+const requireCredits = require('../middlewares/requireCredits');
+
+const Survey = mongoose.model('surveys');
 
 module.exports = app => {
-    app.post('/api/surveys', requireLogin, (req, res) => {
-        
+    app.post('/api/surveys', requireLogin, requireCredits, (req, res) => {
+        const {title, subject, body, recipients} = req.body;
+
+        const survey = new Survey({
+            // title: title
+            title,
+            subject,
+            body,
+            recipients: recipients.split(',').map(email =>  ({ email: email.trim() })),
+            // this returns an array of objects [{}], it's wrapped in paranthesis so that
+            // it knows to return an object, instead of just returning as usual
+            _user: req.user.id,
+            dateSent: Date.now()
+        });
     });
 };
