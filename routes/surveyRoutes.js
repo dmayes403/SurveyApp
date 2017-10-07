@@ -24,5 +24,6 @@ module.exports = app => {
 
         const mailer = new Mailer(survey, surveyTemplate(survey));
         // ^^ creating a new instance of the mailer class
+        mailer.send();
     });
 };

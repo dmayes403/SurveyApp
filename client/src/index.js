@@ -8,6 +8,9 @@ import reduxThunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 // ^^ this automatically pulls in index.js from /reducers, allowing access to combineReducers object
+import axios from 'axios';
+window.axios = axios;
+// ^^ the two lines above allow us to make API calls from the console using the attached cookies for authentication.
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
