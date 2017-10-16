@@ -2,10 +2,13 @@
 // and text input.
 import React from 'react';
 
-export default () => {
+export default ({ input, label }) => {
+    // ^^ properties are automatically given through reactForm and through props added to Field element. This is the same as props.input
     return (
         <div>
-            SurveyField
+            <label>{label}</label>
+            <input {...input}/>
+            {/* ^^ this is the same as doing onBlur={input.onBlur} onChange={input.onChange} etc */}
         </div>
     );
 };
