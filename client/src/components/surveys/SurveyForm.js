@@ -31,7 +31,8 @@ class SurveyForm extends Component {
     render() {
         return (
             <div>
-                <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+                <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
+                    {/* ^^ don't put paranthesis on the end of function because then it will be called the second it's renderFields */}
                     {this.renderFields()}
                     <Link to="/surveys" className="red btn-flat white-text">
                         Cancel
@@ -49,7 +50,7 @@ class SurveyForm extends Component {
 
 function validate(values) {
     const errors = {};
-    
+
     errors.emails = validateEmails(values.emails || '');
     // ^^ the or statement takes care of when there are no emails provided
 
