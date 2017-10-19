@@ -3,6 +3,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 import SurveyField from './SurveyField';
 import _ from 'lodash';
+import validateEmails from '../../utils/validateEmails';
 
 const FIELDS = [
     { label: 'Survey Title', name: 'title' },
@@ -48,12 +49,16 @@ class SurveyForm extends Component {
 
 function validate(values) {
     const errors = {};
+    
+    errors.emails = validateEmails(values.emails || '');
+    // ^^ the or statement takes care of when there are no emails provided
 
     _.each(FIELDS, ({ name }) => {
         if (!values[name]) {
             errors[name] = `You must have a ${name}!`
         }
-    })
+    });
+
 
 
     // ^^ properties being added to the errors object must be the name values of the Fields. 
