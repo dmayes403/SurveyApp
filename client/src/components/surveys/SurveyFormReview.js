@@ -3,8 +3,10 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import formFields from './formFields';
+import * as actions from '../../actions';
+// ^^ give me all my action creators
 
-const SurveyFormReview = ({ onCancel, formValues }) => {
+const SurveyFormReview = ({ onCancel, formValues, submitSurvey }) => {
     // ^^ onCancel is destructured from this.props.onCancel. 
     // formValues comes from setting it on state in mapStateToProps
     const reviewFields = _.map(formFields, ({ name, label }) => {
@@ -27,8 +29,12 @@ const SurveyFormReview = ({ onCancel, formValues }) => {
             <button className="yellow white-text darken-3 btn-flat" onClick={onCancel}>
                 Back
             </button>
-            <button className="green white-text btn-flat right">
-                Send Survey
+            <button 
+                onClick={() => submitSurvey(formValues)} 
+                className="green white-text btn-flat right"
+                >
+                {/* ^^ using an arrow function prevents it from running before it's actually clicked, submitSurvey is an action creator that comes from props */}
+                    Send Survey
                 <i className="material-icons right">email</i>
             </button>
         </div>
@@ -40,4 +46,4 @@ function mapStateToProps(state) {
     // ^^ setting surveyForm values on the formValues prop of state
 }
 
-export default connect(mapStateToProps)(SurveyFormReview);
+export default connect(mapStateToProps, actions)(SurveyFormReview);
