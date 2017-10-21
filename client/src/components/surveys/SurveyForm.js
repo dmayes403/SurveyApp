@@ -45,7 +45,7 @@ class SurveyForm extends Component {
 function validate(values) {
     const errors = {};
 
-    errors.emails = validateEmails(values.emails || '');
+    errors.recipients = validateEmails(values.recipients || '');
     // ^^ the or statement takes care of when there are no emails provided
 
     _.each(formFields, ({ name }) => {
