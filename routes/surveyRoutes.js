@@ -1,3 +1,6 @@
+const _ = require('lodash');
+const Path = require('path-parser');
+const { URL } = require('url');
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
@@ -43,7 +46,20 @@ module.exports = app => {
     });
 
     app.post('/api/surveys/webhooks', (req, res) => {
-        console.log(req.body);
-        res.send({});
-    })
+        const p = new Path('/api/surveys/:surveyId/:choice');
+        // videos 175+ for this filtering
+        // const events = _.map(req.body, (event) => {
+        const events = _.chain(req.body)
+            .map(({ email, url }) => {
+                const match = p.test(new URL(url).pathname);
+                // ^^ this returns an object if both parameters are found
+                if (match) {
+                    // return { email: event.email, surveyId: match.surveyId, choice: match.choice };
+                    return { email, surveyId: match.surveyId, choice: match.choice };
+                }
+            })
+            .compoct()
+            .uniqBy( 'email', 'surveyId')
+            .value();
+    });
 };
