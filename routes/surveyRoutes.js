@@ -8,6 +8,7 @@ const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 const Survey = mongoose.model('surveys');
+// ^^ this is the Survey model class
 
 module.exports = app => {
     app.get('/api/surveys/thanks', (req, res) => {
@@ -58,7 +59,7 @@ module.exports = app => {
                     return { email, surveyId: match.surveyId, choice: match.choice };
                 }
             })
-            .compoct()
+            .compact()
             .uniqBy( 'email', 'surveyId')
             .each(({ surveyId, email, choice}) => {
                 // ^^ destructuring off of event
@@ -66,7 +67,7 @@ module.exports = app => {
                     _id: surveyId,
                     // ^^ mongo uses _id, not just id
                     recipients: {
-                        $eleMatch: { email: email, responded: false }
+                        $elemMatch: { email: email, responded: false }
                     }
                     // ^^ find the record that matches these requirements
                 }, {
