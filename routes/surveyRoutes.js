@@ -11,7 +11,7 @@ const Survey = mongoose.model('surveys');
 // ^^ this is the Survey model class
 
 module.exports = app => {
-    app.get('/api/surveys/thanks', (req, res) => {
+    app.get('/api/surveys/:surveyId/:choice', (req, res) => {
         res.send('Thanks for voting!');
     });
 
@@ -73,7 +73,8 @@ module.exports = app => {
                 }, {
                     $inc: { [choice] : 1 },
                     // ^^ whatever the choice is of the found record, update the survey count of that choice by 1
-                    $set: { 'recipients.$.responded': true }
+                    $set: { 'recipients.$.responded': true },
+                    lastResponded: new Date()
                     // ^^ then update the current found recipients recorded responded property to true
                 }).exec();
                 // ^^ this executes the query
