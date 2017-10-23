@@ -49,7 +49,7 @@ module.exports = app => {
         const p = new Path('/api/surveys/:surveyId/:choice');
         // videos 175+ for this filtering
         // const events = _.map(req.body, (event) => {
-        const events = _.chain(req.body)
+        _.chain(req.body)
             .map(({ email, url }) => {
                 const match = p.test(new URL(url).pathname);
                 // ^^ this returns an object if both parameters are found
@@ -60,6 +60,22 @@ module.exports = app => {
             })
             .compoct()
             .uniqBy( 'email', 'surveyId')
+            .each(event => {
+                Survey.updateOne({
+                    id: surveyId,
+                    recipients: {
+                        $eleMatch: { email: email, responded: false }
+                    }
+                    // ^^ find the record that matches these requirements
+                }, {
+                    $inc: { [choice] : 1 },
+                    // ^^ whatever the choice is of the found record, update the survey count of that choice by 1
+                    $set: { 'recipients.$.responded': true }
+                    // ^^ then update the current found recipients recorded responded property to true
+                })
+            })
             .value();
+
+        res.send({});
     });
 };
