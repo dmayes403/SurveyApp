@@ -60,9 +60,11 @@ module.exports = app => {
             })
             .compoct()
             .uniqBy( 'email', 'surveyId')
-            .each(event => {
+            .each(({ surveyId, email, choice}) => {
+                // ^^ destructuring off of event
                 Survey.updateOne({
-                    id: surveyId,
+                    _id: surveyId,
+                    // ^^ mongo uses _id, not just id
                     recipients: {
                         $eleMatch: { email: email, responded: false }
                     }
@@ -72,7 +74,8 @@ module.exports = app => {
                     // ^^ whatever the choice is of the found record, update the survey count of that choice by 1
                     $set: { 'recipients.$.responded': true }
                     // ^^ then update the current found recipients recorded responded property to true
-                })
+                }).exec();
+                // ^^ this executes the query
             })
             .value();
 
