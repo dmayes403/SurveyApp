@@ -11,6 +11,10 @@ const Survey = mongoose.model('surveys');
 // ^^ this is the Survey model class
 
 module.exports = app => {
+    app.get('/api/surveys', (req, res) => {
+        
+    });
+
     app.get('/api/surveys/:surveyId/:choice', (req, res) => {
         res.send('Thanks for voting!');
     });
