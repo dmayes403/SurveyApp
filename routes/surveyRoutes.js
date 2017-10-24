@@ -11,8 +11,12 @@ const Survey = mongoose.model('surveys');
 // ^^ this is the Survey model class
 
 module.exports = app => {
-    app.get('/api/surveys', (req, res) => {
-        
+    app.get('/api/surveys', requireLogin, async (req, res) => {
+        // ***** do the requireLogin type logic for determining login privileges in movie app
+        const surveys = await Survey.find({ _user: req.user.id })
+            .select({ recipients: false });
+            // ^^ this means don't include recipients property in query. Cuts down on data sent back
+        res.send(surveys);
     });
 
     app.get('/api/surveys/:surveyId/:choice', (req, res) => {
