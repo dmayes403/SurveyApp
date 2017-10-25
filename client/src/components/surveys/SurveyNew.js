@@ -21,7 +21,6 @@ class SurveyNew extends Component {
                     onCancel={() => this.setState({ showFormReview: false })}
                 />
             );
-                    {/* ^^ passing onCancel as a prop on SurveyFormReview component */}
         }
 
         return <SurveyForm onSurveySubmit={() => this.setState({ showFormReview: true })} />;
